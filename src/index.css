@@ -1,2 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Rancho&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --font-raleway: "Raleway", "sans-serif";
+  --font-rancho: "Rancho", "cursive";
+  --color-ceceae3: #eceae3;
+  --color-cf5f4f1: #f5f4f1;
+  --color-c331a15: #331a15;
+  --color-ce3b577: #e3b577;
+  --color-c1b1a1a: #1b1a1a;
+  --color-c5c5b5b: #5c5b5b;
+  --color-cd2b48c: #d2b48c;
+  --color-cea4744: #ea4744;
+  --color-c3c393b: #3c393b;
+}
+
+body,
+p {
+  font-family: var(--font-raleway);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: var(--font-rancho);
+}
