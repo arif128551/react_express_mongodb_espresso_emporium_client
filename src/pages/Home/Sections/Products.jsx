@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { SlCup } from "react-icons/sl";
 import { Link, useLoaderData } from "react-router";
 import ProductCard from "./Card/ProductCard";
 const Products = () => {
-	const products = useLoaderData();
+	const initialProducts = useLoaderData();
+	const [products, setProducts] = useState(initialProducts);
 	return (
 		<div className="py-30 px-4">
 			<div className="container max-w-7xl mx-auto">
@@ -20,7 +21,12 @@ const Products = () => {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
 					{products.map((product) => (
-						<ProductCard key={product._id} product={product}></ProductCard>
+						<ProductCard
+							key={product._id}
+							products={products}
+							product={product}
+							setProducts={setProducts}
+						></ProductCard>
 					))}
 				</div>
 			</div>
