@@ -4,6 +4,7 @@ import { FaRegEye } from "react-icons/fa6";
 import { IoPencil } from "react-icons/io5";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const ProductCard = ({ product, setProducts, products }) => {
 	const { _id, coffee_name, coffee_chef, coffee_price, coffee_image } = product;
@@ -53,12 +54,18 @@ const ProductCard = ({ product, setProducts, products }) => {
 				</div>
 			</div>
 			<div className="flex lg:flex-col flex-row gap-4">
-				<button className="w-10 h-10 bg-cd2b48c flex items-center justify-center rounded-md text-white cursor-pointer">
+				<Link
+					to={`/coffees/${_id}`}
+					className="w-10 h-10 bg-cd2b48c flex items-center justify-center rounded-md text-white cursor-pointer"
+				>
 					<FaRegEye />
-				</button>
-				<button className="w-10 h-10 bg-c3c393b flex items-center justify-center rounded-md text-white cursor-pointer">
+				</Link>
+				<Link
+					to={`/coffees/edit/${_id}`}
+					className="w-10 h-10 bg-c3c393b flex items-center justify-center rounded-md text-white cursor-pointer"
+				>
 					<IoPencil />
-				</button>
+				</Link>
 				<button
 					onClick={() => handleDeleteCoffee(_id)}
 					className="w-10 h-10 bg-cea4744 flex items-center justify-center rounded-md text-white cursor-pointer"
