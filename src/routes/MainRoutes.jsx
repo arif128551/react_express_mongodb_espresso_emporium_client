@@ -6,6 +6,9 @@ import AddCoffee from "../pages/AddCoffee/AddCoffee";
 import PageLoader from "../components/ui/PageLoader";
 import CoffeeDetails from "../pages/CoffeeDetails";
 import UpdateCoffee from "../pages/UpdateCoffee";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
+import ForgetPassword from "../pages/Auth/ForgetPassword";
 
 export const router = createBrowserRouter([
 	{
@@ -34,6 +37,18 @@ export const router = createBrowserRouter([
 				Component: UpdateCoffee,
 				loader: ({ params }) => fetch(`http://localhost:3000/coffees/${params.id}`),
 				hydrateFallbackElement: <PageLoader />,
+			},
+			{
+				path: "/login",
+				Component: Login,
+			},
+			{
+				path: "/register",
+				Component: Register,
+			},
+			{
+				path: "/forget-password",
+				Component: ForgetPassword,
 			},
 		],
 	},
