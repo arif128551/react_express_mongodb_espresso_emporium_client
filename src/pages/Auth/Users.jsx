@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { Link, useLoaderData } from "react-router";
 import addCoffeeBg from "../../assets/add-coffee/add-coffee-bg.jpg";
@@ -8,13 +8,16 @@ import { LiaPenSolid } from "react-icons/lia";
 import { AuthContext } from "../../assets/contexts/AuthContext";
 import Swal from "sweetalert2";
 const Users = () => {
-	const {} = AuthContext;
+	const { setUser } = use(AuthContext);
 	const initialUsers = useLoaderData();
 	const [users, setUsers] = useState(initialUsers);
 	const handleUserDelete = (userId) => {
+		const targetUser = users.find((user) => user._id === userId);
+		if (!targetUser) return;
+
 		Swal.fire({
 			title: "Are you sure?",
-			text: "You won't be able to revert this!",
+			text: "User will be deleted from both MongoDB and Firebase!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
@@ -22,24 +25,37 @@ const Users = () => {
 			confirmButtonText: "Yes, delete it!",
 		}).then((result) => {
 			if (result.isConfirmed) {
+				// 1️⃣ MongoDB থেকে delete
 				fetch(`http://localhost:3000/users/${userId}`, {
 					method: "DELETE",
 				})
 					.then((res) => res.json())
 					.then(() => {
-						const remainingUsers = users.filter((user) => user._id !== userId);
-						setUsers(remainingUsers);
-						Swal.fire({
-							position: "top-end",
-							icon: "success",
-							title: "Deleted User successfully",
-							showConfirmButton: false,
-							timer: 1500,
-						});
+						fetch("http://localhost:3000/firebase-users", {
+							method: "DELETE",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ email: targetUser.email }),
+						})
+							.then((res) => res.json())
+							.then(() => {
+								const remainingUsers = users.filter((user) => user._id !== userId);
+								setUsers(remainingUsers);
+								setUser(null);
+								Swal.fire({
+									position: "top-end",
+									icon: "success",
+									title: "Deleted user from MongoDB & Firebase",
+									showConfirmButton: false,
+									timer: 1500,
+								});
+							});
 					});
 			}
 		});
 	};
+
 	return (
 		<div
 			className="bg-top bg-no-repeat lg:pt-14 lg:pb-28 py-10 px-4"

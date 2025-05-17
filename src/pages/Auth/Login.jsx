@@ -50,6 +50,22 @@ const Login = () => {
 			.then((result) => {
 				const user = result.user;
 				const { creationTime, lastSignInTime } = user.metadata;
+				const userProfile = {
+					email: user.email,
+					creationTime,
+					lastSignInTime,
+				};
+				fetch("http://localhost:3000/users", {
+					method: "POST",
+					headers: {
+						"content-type": "application/json",
+					},
+					body: JSON.stringify(userProfile),
+				})
+					.then((res) => res.json())
+					.then((result) => {
+						console.log("user data uploaded done ", result);
+					});
 				if (creationTime === lastSignInTime) {
 					Swal.fire({
 						position: "top-end",

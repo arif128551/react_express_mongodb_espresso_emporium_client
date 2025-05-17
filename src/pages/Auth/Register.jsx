@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../assets/contexts/AuthContext";
 import Swal from "sweetalert2";
 const Register = () => {
-	const { createUser, setUser, updateUser, googleSignIn, setLoading } = use(AuthContext);
+	const { createUser, setUser, googleSignIn, setLoading } = use(AuthContext);
 	const navigate = useNavigate();
 	const handleRegister = (e) => {
 		e.preventDefault();
@@ -48,20 +48,6 @@ const Register = () => {
 		createUser(email, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				// updateUser({ displayName, photoURL })
-				// 	.then(() => {
-				// 		setUser({ ...user, displayName, photoURL });
-				// 	})
-				// 	.catch((error) => {
-				// 		Swal.fire({
-				// 			position: "top-end",
-				// 			icon: "error",
-				// 			title: `${error}`,
-				// 			showConfirmButton: false,
-				// 			timer: 1500,
-				// 		});
-				// 		setUser(user);
-				// 	});
 				setUser(user);
 
 				const userProfile = {
@@ -109,6 +95,22 @@ const Register = () => {
 			.then((result) => {
 				const user = result.user;
 				const { creationTime, lastSignInTime } = user.metadata;
+				const userProfile = {
+					email: user.email,
+					creationTime,
+					lastSignInTime,
+				};
+				fetch("http://localhost:3000/users", {
+					method: "POST",
+					headers: {
+						"content-type": "application/json",
+					},
+					body: JSON.stringify(userProfile),
+				})
+					.then((res) => res.json())
+					.then((result) => {
+						console.log("user data uploaded done ", result);
+					});
 				if (creationTime === lastSignInTime) {
 					Swal.fire({
 						position: "top-end",
