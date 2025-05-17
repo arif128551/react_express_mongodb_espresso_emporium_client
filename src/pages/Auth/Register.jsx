@@ -10,11 +10,8 @@ const Register = () => {
 	const handleRegister = (e) => {
 		e.preventDefault();
 		const form = e.target;
-		const displayName = form.name.value;
-		const photoURL = form.photo.value;
-		const email = form.email.value;
-		const password = form.password.value;
-
+		const formData = new FormData(form);
+		const { email, password, ...restFormData } = Object.fromEntries(formData.entries());
 		if (password.length < 6) {
 			Swal.fire({
 				position: "top-end",
@@ -51,19 +48,39 @@ const Register = () => {
 		createUser(email, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				updateUser({ displayName, photoURL })
-					.then(() => {
-						setUser({ ...user, displayName, photoURL });
-					})
-					.catch((error) => {
-						Swal.fire({
-							position: "top-end",
-							icon: "error",
-							title: `${error}`,
-							showConfirmButton: false,
-							timer: 1500,
-						});
-						setUser(user);
+				// updateUser({ displayName, photoURL })
+				// 	.then(() => {
+				// 		setUser({ ...user, displayName, photoURL });
+				// 	})
+				// 	.catch((error) => {
+				// 		Swal.fire({
+				// 			position: "top-end",
+				// 			icon: "error",
+				// 			title: `${error}`,
+				// 			showConfirmButton: false,
+				// 			timer: 1500,
+				// 		});
+				// 		setUser(user);
+				// 	});
+				setUser(user);
+
+				const userProfile = {
+					email,
+					...restFormData,
+					creationTime: user?.metadata?.creationTime,
+					lastSignInTime: user?.metadata?.lastSignInTime,
+				};
+
+				fetch("http://localhost:3000/users", {
+					method: "POST",
+					headers: {
+						"content-type": "application/json",
+					},
+					body: JSON.stringify(userProfile),
+				})
+					.then((res) => res.json())
+					.then((result) => {
+						console.log("user data uploaded done ", result);
 					});
 
 				Swal.fire({
@@ -168,6 +185,14 @@ const Register = () => {
 						<fieldset className="fieldset">
 							<label className="label text-xl font-semibold text-c1b1a1a">Email</label>
 							<input name="email" type="email" className="input w-full" placeholder="Enter your email" />
+						</fieldset>
+						<fieldset className="fieldset">
+							<label className="label text-xl font-semibold text-c1b1a1a">Address</label>
+							<input name="address" type="text" className="input w-full" placeholder="Enter your address" />
+						</fieldset>
+						<fieldset className="fieldset">
+							<label className="label text-xl font-semibold text-c1b1a1a">Phone</label>
+							<input name="phone" type="text" className="input w-full" placeholder="Enter your phone" />
 						</fieldset>
 						<fieldset className="fieldset">
 							<label className="label text-xl font-semibold text-c1b1a1a">Photo URL</label>

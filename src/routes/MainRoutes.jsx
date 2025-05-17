@@ -9,6 +9,7 @@ import UpdateCoffee from "../pages/UpdateCoffee";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
+import Users from "../pages/Auth/Users";
 
 export const router = createBrowserRouter([
 	{
@@ -49,6 +50,12 @@ export const router = createBrowserRouter([
 			{
 				path: "/forget-password",
 				Component: ForgetPassword,
+			},
+			{
+				path: "/users",
+				Component: Users,
+				loader: () => fetch("http://localhost:3000/users"),
+				hydrateFallbackElement: <PageLoader />,
 			},
 		],
 	},
