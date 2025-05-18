@@ -10,6 +10,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
 import Users from "../pages/Auth/Users";
+import UserDetails from "../pages/Auth/UserDetails";
 
 export const router = createBrowserRouter([
 	{
@@ -55,6 +56,12 @@ export const router = createBrowserRouter([
 				path: "/users",
 				Component: Users,
 				loader: () => fetch("http://localhost:3000/users"),
+				hydrateFallbackElement: <PageLoader />,
+			},
+			{
+				path: "/users/:id",
+				Component: UserDetails,
+				loader: ({ params }) => fetch(`http://localhost:3000/users/${params.id}`),
 				hydrateFallbackElement: <PageLoader />,
 			},
 		],

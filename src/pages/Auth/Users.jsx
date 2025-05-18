@@ -111,9 +111,9 @@ const Users = () => {
 												<button className="btn bg-green-500 p-2 text-white">
 													<FaEye size={20} />
 												</button>
-												<button className="btn bg-black p-2 text-white">
+												<Link to={`/users/${user._id}`} className="btn bg-black p-2 text-white">
 													<LiaPenSolid size={20} />
-												</button>
+												</Link>
 												<button onClick={() => handleUserDelete(user._id)} className="btn bg-red-500 p-2 text-white">
 													<MdDelete size={20} />
 												</button>

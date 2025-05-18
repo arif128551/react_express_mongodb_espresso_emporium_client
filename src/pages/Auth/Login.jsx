@@ -14,7 +14,24 @@ const Login = () => {
 		const password = e.target.password.value;
 
 		signInUserWithEmailPass(email, password)
-			.then(() => {
+			.then((result) => {
+				const user = result?.user;
+				const signInInfo = {
+					email,
+					lastSignInTime: user?.metadata?.lastSignInTime,
+				};
+
+				fetch("http://localhost:3000/users", {
+					method: "PATCH",
+					headers: {
+						"content-type": "application/json",
+					},
+					body: JSON.stringify(signInInfo),
+				})
+					.then((res) => res.json())
+					.then((result) => {
+						console.log("check the result", result);
+					});
 				Swal.fire({
 					position: "top-end",
 					icon: "success",
@@ -63,26 +80,41 @@ const Login = () => {
 					body: JSON.stringify(userProfile),
 				})
 					.then((res) => res.json())
-					.then((result) => {
-						console.log("user data uploaded done ", result);
+					.then((data) => {
+						if (data.status === "new") {
+							Swal.fire({
+								position: "top-end",
+								icon: "success",
+								title: "Account created successfully with Google! You're now logged in.",
+								showConfirmButton: false,
+								timer: 1500,
+							});
+						} else if (data.status === "existing") {
+							const userMongoProfile = {
+								email: user.email,
+								lastSignInTime,
+							};
+							fetch("http://localhost:3000/users", {
+								method: "PATCH",
+								headers: {
+									"content-type": "application/json",
+								},
+								body: JSON.stringify(userMongoProfile),
+							})
+								.then((res) => res.json())
+								.then((result) => {
+									console.log("PATCH result:", result);
+								});
+
+							Swal.fire({
+								position: "top-end",
+								icon: "success",
+								title: "Welcome back! You've logged in with Google.",
+								showConfirmButton: false,
+								timer: 1500,
+							});
+						}
 					});
-				if (creationTime === lastSignInTime) {
-					Swal.fire({
-						position: "top-end",
-						icon: "success",
-						title: "Account created successfully with Google! You're now logged in.",
-						showConfirmButton: false,
-						timer: 1500,
-					});
-				} else {
-					Swal.fire({
-						position: "top-end",
-						icon: "success",
-						title: "Welcome back! You've logged in with Google.",
-						showConfirmButton: false,
-						timer: 1500,
-					});
-				}
 				navigate("/");
 			})
 			.catch((error) => {
