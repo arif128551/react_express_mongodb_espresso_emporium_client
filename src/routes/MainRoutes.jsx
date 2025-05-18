@@ -11,6 +11,7 @@ import Register from "../pages/Auth/Register";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
 import Users from "../pages/Auth/Users";
 import UserDetails from "../pages/Auth/UserDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
 	{
@@ -20,24 +21,34 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				loader: () => fetch("http://localhost:3000/coffees"),
+				loader: () => fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/coffees"),
 				hydrateFallbackElement: <PageLoader />,
 				Component: Home,
 			},
 			{
 				path: "/add-coffee",
-				Component: AddCoffee,
+				element: (
+					<PrivateRoute>
+						<AddCoffee></AddCoffee>
+					</PrivateRoute>
+				),
 			},
 			{
 				path: "/coffees/:id",
 				Component: CoffeeDetails,
-				loader: ({ params }) => fetch(`http://localhost:3000/coffees/${params.id}`),
+				loader: ({ params }) =>
+					fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/coffees/${params.id}`),
 				hydrateFallbackElement: <PageLoader />,
 			},
 			{
 				path: "/coffees/edit/:id",
-				Component: UpdateCoffee,
-				loader: ({ params }) => fetch(`http://localhost:3000/coffees/${params.id}`),
+				element: (
+					<PrivateRoute>
+						<UpdateCoffee></UpdateCoffee>
+					</PrivateRoute>
+				),
+				loader: ({ params }) =>
+					fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/coffees/${params.id}`),
 				hydrateFallbackElement: <PageLoader />,
 			},
 			{
@@ -55,13 +66,18 @@ export const router = createBrowserRouter([
 			{
 				path: "/users",
 				Component: Users,
-				loader: () => fetch("http://localhost:3000/users"),
+				loader: () => fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users"),
 				hydrateFallbackElement: <PageLoader />,
 			},
 			{
 				path: "/users/:id",
-				Component: UserDetails,
-				loader: ({ params }) => fetch(`http://localhost:3000/users/${params.id}`),
+				element: (
+					<PrivateRoute>
+						<UserDetails></UserDetails>
+					</PrivateRoute>
+				),
+				loader: ({ params }) =>
+					fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/users/${params.id}`),
 				hydrateFallbackElement: <PageLoader />,
 			},
 		],

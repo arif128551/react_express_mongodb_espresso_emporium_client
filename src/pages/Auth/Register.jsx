@@ -57,7 +57,7 @@ const Register = () => {
 					lastSignInTime: user?.metadata?.lastSignInTime,
 				};
 
-				fetch("http://localhost:3000/users", {
+				fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 					method: "POST",
 					headers: {
 						"content-type": "application/json",
@@ -100,7 +100,7 @@ const Register = () => {
 					creationTime,
 					lastSignInTime,
 				};
-				fetch("http://localhost:3000/users", {
+				fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 					method: "POST",
 					headers: {
 						"content-type": "application/json",
@@ -122,7 +122,7 @@ const Register = () => {
 								email: user.email,
 								lastSignInTime,
 							};
-							fetch("http://localhost:3000/users", {
+							fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 								method: "PATCH",
 								headers: {
 									"content-type": "application/json",

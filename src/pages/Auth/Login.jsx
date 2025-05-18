@@ -21,7 +21,7 @@ const Login = () => {
 					lastSignInTime: user?.metadata?.lastSignInTime,
 				};
 
-				fetch("http://localhost:3000/users", {
+				fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 					method: "PATCH",
 					headers: {
 						"content-type": "application/json",
@@ -72,7 +72,7 @@ const Login = () => {
 					creationTime,
 					lastSignInTime,
 				};
-				fetch("http://localhost:3000/users", {
+				fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 					method: "POST",
 					headers: {
 						"content-type": "application/json",
@@ -94,7 +94,7 @@ const Login = () => {
 								email: user.email,
 								lastSignInTime,
 							};
-							fetch("http://localhost:3000/users", {
+							fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/users", {
 								method: "PATCH",
 								headers: {
 									"content-type": "application/json",

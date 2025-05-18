@@ -26,12 +26,12 @@ const Users = () => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				// 1️⃣ MongoDB থেকে delete
-				fetch(`http://localhost:3000/users/${userId}`, {
+				fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/users/${userId}`, {
 					method: "DELETE",
 				})
 					.then((res) => res.json())
 					.then(() => {
-						fetch("http://localhost:3000/firebase-users", {
+						fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/firebase-users", {
 							method: "DELETE",
 							headers: {
 								"Content-Type": "application/json",

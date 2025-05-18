@@ -1,13 +1,15 @@
-import React from "react";
+import React, { use } from "react";
 
 import { FaRegEye } from "react-icons/fa6";
 import { IoPencil } from "react-icons/io5";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import { AuthContext } from "../../../../assets/contexts/AuthContext";
 
 const ProductCard = ({ product, setProducts, products }) => {
 	const { _id, coffee_name, coffee_chef, coffee_price, coffee_image } = product;
+	const { user } = use(AuthContext);
 	const handleDeleteCoffee = (id) => {
 		Swal.fire({
 			title: "Are you sure?",
@@ -18,10 +20,10 @@ const ProductCard = ({ product, setProducts, products }) => {
 			cancelButtonColor: "#d33",
 			confirmButtonText: "Yes, delete it!",
 		}).then((result) => {
-			if (result.isConfirmed) {
+			if (result.isConfirmed && user) {
 				const remainingProducts = products.filter((product) => product._id !== id);
 				setProducts(remainingProducts);
-				fetch(`http://localhost:3000/coffees/${id}`, {
+				fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/coffees/${id}`, {
 					method: "DELETE",
 				})
 					.then((res) => res.json())
@@ -32,6 +34,14 @@ const ProductCard = ({ product, setProducts, products }) => {
 							icon: "success",
 						});
 					});
+			} else {
+				Swal.fire({
+					position: "top-end",
+					icon: "error",
+					title: "You need to login to delete",
+					showConfirmButton: false,
+					timer: 1500,
+				});
 			}
 		});
 	};

@@ -9,7 +9,7 @@ const AddCoffee = () => {
 		const form = e.target;
 		const formData = new FormData(form);
 		const formEntries = Object.fromEntries(formData.entries());
-		fetch("http://localhost:3000/coffees", {
+		fetch("https://react-express-mongodb-espresso-emporium-server.vercel.app/coffees", {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",

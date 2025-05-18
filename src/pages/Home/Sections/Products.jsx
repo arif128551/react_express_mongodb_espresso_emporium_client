@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router";
 import ProductCard from "./Card/ProductCard";
 const Products = () => {
 	const initialProducts = useLoaderData();
-	const [products, setProducts] = useState(initialProducts);
+	const [products, setProducts] = useState(Array.isArray(initialProducts) ? initialProducts : []);
 	return (
 		<div className="py-30 px-4">
 			<div className="container max-w-7xl mx-auto">

@@ -9,7 +9,7 @@ const UserDetails = () => {
 		const form = e.target;
 		const formData = new FormData(form);
 		const formEntries = Object.fromEntries(formData.entries());
-		fetch(`http://localhost:3000/users/update/${_id}`, {
+		fetch(`https://react-express-mongodb-espresso-emporium-server.vercel.app/users/update/${_id}`, {
 			method: "PATCH",
 			headers: {
 				"content-type": "application/json",
